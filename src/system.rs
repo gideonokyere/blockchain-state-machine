@@ -14,6 +14,7 @@ pub trait Config{
   type Nonce:Zero+Copy+One;
 }
 
+/// System block and user's nonce struct
 #[derive(Debug)]
 pub struct Pallet<T:Config>{
   block_number:T::BlockNumber,
@@ -21,6 +22,7 @@ pub struct Pallet<T:Config>{
 }
 
 impl<T:Config> Pallet<T>{
+  /// Set blocknumber and set nonce for user account
   pub fn new()->Self{
     Self{block_number:T::BlockNumber::zero(),nonce:BTreeMap::new()}
   }
@@ -46,7 +48,6 @@ impl<T:Config> Pallet<T>{
     self.nonce.insert(who.clone(), new_nonce.unwrap());
   }
 }
-
 #[cfg(test)]
 mod test{
 
@@ -59,6 +60,7 @@ mod test{
   }
 
   #[test]
+  /// testing make sure block is incresed and user's nonce is also incresed
   fn init_system(){
     let mut block:super::Pallet<TestConfig> = super::Pallet::new();
     block.inc_block_number();
